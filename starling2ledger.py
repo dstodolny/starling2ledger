@@ -40,7 +40,7 @@ class ConverterPanel(wx.Panel):
 
 class ConverterFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='Starling CSV converter')
+        super().__init__(parent=None, title='Starling CSV converter', size=(800, 600))
         self.panel = ConverterPanel(self)
         self.create_menu()
         self.Show()
