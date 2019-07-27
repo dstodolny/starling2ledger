@@ -16,12 +16,17 @@ class ConverterPanel(wx.Panel):
         text_sizer.Add(self.csv_ctrl, 1, wx.ALL | wx.EXPAND, 1)
         text_sizer.Add(self.ldg_ctrl, 1, wx.ALL | wx.EXPAND, 1)
 
+        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        openButton = wx.Button(self, label = "Open")
+        openButton.Bind(wx.EVT_BUTTON, self.on_open)
         convertButton = wx.Button(self, label = "Convert")
         convertButton.Bind(wx.EVT_BUTTON, self.on_convert)
+        button_sizer.Add(openButton, 1, wx.ALL)
+        button_sizer.Add(convertButton, 1, wx.ALL)
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(text_sizer, 1, wx.ALL | wx.EXPAND, 5)
-        main_sizer.Add(convertButton, 0, wx.ALL | wx.CENTER, 5)
+        main_sizer.Add(button_sizer, 0, wx.ALL | wx.CENTER, 5)
 
         self.SetSizer(main_sizer)
 
@@ -31,6 +36,12 @@ class ConverterPanel(wx.Panel):
         self.csv_ctrl.SetValue(filehandle.read())
         filehandle.close()
 
+    def on_open(self, event):
+        title = "Choose a csv file:"
+        dlg = wx.FileDialog(self, title, wildcard="*.csv")
+        if dlg.ShowModal() == wx.ID_OK:
+            self.load_csv(dlg.GetPath())
+        dlg.Destroy()
 
     def on_convert(self, e):
         data = self.csv_ctrl.GetValue()
@@ -55,17 +66,10 @@ class ConverterFrame(wx.Frame):
         menu_bar.Append(file_menu, '&File')
         self.Bind(
             event=wx.EVT_MENU,
-            handler=self.on_open,
+            handler=self.panel.on_open,
             source=open_menu_item,
         )
         self.SetMenuBar(menu_bar)
-
-    def on_open(self, event):
-        title = "Choose a csv file:"
-        dlg = wx.FileDialog(self, title, wildcard="*.csv")
-        if dlg.ShowModal() == wx.ID_OK:
-            self.panel.load_csv(dlg.GetPath())
-        dlg.Destroy()
 
 
 class Parser():
