@@ -29,11 +29,11 @@ def parse(raw_data):
         amount = row[4]
         output += "{} {}\n".format(date, payee)
         if (float(amount) >= 0):
-            output += "  Assets:Monzo:Checking  £{}\n".format(amount)
+            output += "  Assets:Starling:Personal  £{}\n".format(amount)
             output += "  X:X\n"
         else:
             output += "  Expenses:X  £{}\n".format(amount[1:])
-            output += "  Assets:Monzo:Checking\n"
+            output += "  Assets:Starling:Personal\n"
             output += "  ;; Reference: {}\n\n".format(description)
     return output
 
